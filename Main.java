@@ -8,8 +8,9 @@ public class Main {
 
         ConversationManager chat = new ConversationManager();
 
-        User u1 = new User("1", "Juan");
+        User u1 = new User("1", "Mario");
         User u2 = new User("2", "Angie");
+        
 
         chat.addParticipant(u1);
         chat.addParticipant(u2);
@@ -36,12 +37,13 @@ public class Main {
 
             User currentUser = null;
 
-            if (name.equalsIgnoreCase("Juan")) {
+            if (name.equalsIgnoreCase("Mario")) {
                 currentUser = u1;
             } else if (name.equalsIgnoreCase("Angie")) {
                 currentUser = u2;
             }
-
+         
+            
             if (currentUser == null) {
                 System.out.println("User not registered.");
                 continue;
