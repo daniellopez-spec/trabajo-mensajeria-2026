@@ -128,6 +128,7 @@ public class Main {
                             pm.show();
                             System.out.print("Choose option: ");
                             int vote = sc.nextInt();
+                            sc.nextLine();
                             pm.vote(vote);
                             pm.showResults();
                         }
