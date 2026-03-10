@@ -3,9 +3,9 @@ import java.util.List;
 
 public class ConversationManager {
 
-    private List<User> participants; 
+    private List<User> participants;
     private List<Message> messages;
-     
+
     public ConversationManager() {
         participants = new ArrayList<>();
         messages = new ArrayList<>();
@@ -19,8 +19,24 @@ public class ConversationManager {
         participants.add(user);
     }
 
+    public void removeParticipant(User user) {
+        participants.remove(user);
+        System.out.println(user.getName() + " removed from conversation.");
+    }
+
     public void sendMessage(Message message) {
         messages.add(message);
+    }
+
+    public Message getMessage(String id) {
+        for (Message m : messages) {
+            if (m.id.equals(id)) return m;
+        }
+        return null;
+    }
+
+    public void editMessage(String id, String newContent) {
+        System.out.println("Message " + id + " edited.");
     }
 
     public void showMessages() {
@@ -33,13 +49,12 @@ public class ConversationManager {
         return messages;
     }
 
-    // NUEVO
     public void showPolls() {
-        boolean hayEncuestas = false;
+        boolean hasPolls = false;
 
         for (Message m : messages) {
             if (m instanceof PollMessage) {
-                hayEncuestas = true;
+                hasPolls = true;
                 PollMessage pm = (PollMessage) m;
                 pm.show();
                 pm.showResults();
@@ -47,7 +62,7 @@ public class ConversationManager {
             }
         }
 
-        if (!hayEncuestas) {
+        if (!hasPolls) {
             System.out.println("No polls have been created yet.");
         }
     }

@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-import java.util.Scanner;  
- 
+import java.util.Scanner;
+
 public class Main {
     private static ArrayList<String> users = new ArrayList<>();
-    
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in); 
+        Scanner sc = new Scanner(System.in);
         ConversationManager chat = new ConversationManager();
 
         User u1 = new User("1", "Juan");
@@ -13,34 +13,44 @@ public class Main {
 
         chat.addParticipant(u1);
         chat.addParticipant(u2);
+        u1.registerUser();
+        u2.registerUser();
+        u1.participateInConversation();
+        u2.participateInConversation();
         users.add("Juan");
         users.add("Angie");
-        
+
         int option;
 
         do {
             System.out.println("\n--- MENU ---");
-            System.out.println("1 Send text message");
-            System.out.println("2 Send multimedia");
-            System.out.println("3 Create poll");
-            System.out.println("4 View messages");
-            System.out.println("5 Vote poll");
-            System.out.println("6 Register new user");
-            System.out.println("7 View polls and votes");
-            System.out.println("0 Exit");
+            System.out.println("1  Send text message");
+            System.out.println("2  Send multimedia");
+            System.out.println("3  Create poll");
+            System.out.println("4  View messages");
+            System.out.println("5  Vote poll");
+            System.out.println("6  Register new user");
+            System.out.println("7  View polls and votes");
+            System.out.println("8  Check message status");
+            System.out.println("9  Text tools");
+            System.out.println("10 Multimedia tools");
+            System.out.println("11 Poll statistics");
+            System.out.println("0  Exit");
 
             option = sc.nextInt();
             sc.nextLine();
 
             if (option == 0) break;
 
-            // Opción 6 y 7 no necesitan validación de usuario
+            // Opciones que no necesitan validación de usuario
             if (option == 6) {
                 System.out.print("Enter new username: ");
                 String newUser = sc.nextLine();
                 registerUser(newUser);
                 User newU = new User("u" + System.currentTimeMillis(), newUser);
                 chat.addParticipant(newU);
+                newU.registerUser();
+                newU.participateInConversation();
                 continue;
             }
 
@@ -49,7 +59,76 @@ public class Main {
                 continue;
             }
 
-            // Validación para las demás opciones
+            // Opciones 8, 9, 10, 11 no necesitan usuario
+            if (option == 8) {
+                if (chat.getMessages().isEmpty()) {
+                    System.out.println("No messages yet.");
+                } else {
+                    System.out.println("\n--- MESSAGE STATUS ---");
+                    for (Message m : chat.getMessages()) {
+                        m.markAsReceived();
+                        m.markAsRead();
+                        System.out.println("Message status: " + m.getStatus());
+                    }
+                }
+                continue;
+            }
+
+            if (option == 9) {
+                System.out.println("\n--- TEXT TOOLS ---");
+                boolean hasText = false;
+                for (Message m : chat.getMessages()) {
+                    if (m instanceof TextMessage) {
+                        hasText = true;
+                        TextMessage t = (TextMessage) m;
+                        System.out.print("Max length to validate: ");
+                        int max = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println("Valid length: " + t.validateLength(max));
+                        System.out.println("Summary: " + t.summarizeText());
+                    }
+                }
+                if (!hasText) System.out.println("No text messages found.");
+                continue;
+            }
+
+            if (option == 10) {
+                System.out.println("\n--- MULTIMEDIA TOOLS ---");
+                boolean hasMedia = false;
+                for (Message m : chat.getMessages()) {
+                    if (m instanceof MultimediaMessage) {
+                        hasMedia = true;
+                        MultimediaMessage mm = (MultimediaMessage) m;
+                        mm.show();
+                        System.out.println("Valid format: " + mm.validateFormat());
+                        mm.viewImage();
+                        mm.downloadFile();
+                    }
+                }
+                if (!hasMedia) System.out.println("No multimedia messages found.");
+                continue;
+            }
+
+            if (option == 11) {
+                System.out.println("\n--- POLL STATISTICS ---");
+                boolean hasPolls = false;
+                for (Message m : chat.getMessages()) {
+                    if (m instanceof PollMessage) {
+                        hasPolls = true;
+                        PollMessage pm = (PollMessage) m;
+                        pm.show();
+                        System.out.println("Total votes: " + pm.countVotes());
+                        System.out.println("Results:");
+                        for (Option o : pm.getResults()) {
+                            System.out.println("  " + o.getText() + ": " + o.getVotes() + " votes");
+                        }
+                    }
+                }
+                if (!hasPolls) System.out.println("No polls found.");
+                continue;
+            }
+
+            // Validación de usuario para opciones 1-5
             System.out.print("Enter your username: ");
             String name = sc.nextLine();
 
@@ -66,7 +145,7 @@ public class Main {
                 System.out.println("User not registered.");
                 continue;
             }
-     
+
             switch (option) {
                 case 1:
                     System.out.print("Message: ");
@@ -128,6 +207,7 @@ public class Main {
                             pm.show();
                             System.out.print("Choose option: ");
                             int vote = sc.nextInt();
+                            sc.nextLine();
                             pm.vote(vote);
                             pm.showResults();
                         }

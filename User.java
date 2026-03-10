@@ -16,12 +16,20 @@ public class User {
         return name;
     }
 
+    public void registerUser() {
+        System.out.println("User " + name + " registered successfully.");
+    }
+
     public void sendMessage(Message message) {
         System.out.println(name + " sent a message.");
     }
 
     public void receiveMessage(Message message) {
         System.out.println(name + " received a message.");
+    }
+
+    public void participateInConversation() {
+        System.out.println(name + " is participating in the conversation.");
     }
 
     @Override

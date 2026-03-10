@@ -16,8 +16,20 @@ public abstract class Message {
         this.status = MessageStatus.SENT;
     }
 
+    public void markAsSent() {
+        status = MessageStatus.SENT;
+    }
+
+    public void markAsReceived() {
+        status = MessageStatus.RECEIVED;
+    }
+
     public void markAsRead() {
         status = MessageStatus.READ;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
     }
 
     public abstract void show();

@@ -24,11 +24,24 @@ public class PollMessage extends Message {
         }
     }
 
+    public int countVotes() {
+        int total = 0;
+        for (Option o : options) {
+            total += o.getVotes();
+        }
+        return total;
+    }
+
+    public List<Option> getResults() {
+        return options;
+    }
+
     public void showResults() {
         System.out.println("Results:");
         for (Option o : options) {
             System.out.println(o.getText() + " -> " + o.getVotes() + " votes");
         }
+        System.out.println("Total votes: " + countVotes());
     }
 
     @Override
