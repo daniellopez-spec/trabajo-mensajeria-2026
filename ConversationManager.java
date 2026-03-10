@@ -3,13 +3,19 @@ import java.util.List;
 
 public class ConversationManager {
 
-    private List<User> participants;
+    private List<User> participants; 
     private List<Message> messages;
-
+     
     public ConversationManager() {
         participants = new ArrayList<>();
         messages = new ArrayList<>();
     }
+
+    public List<User> getParticipants() {
+    return participants;
+}
+
+     
 
     public void addParticipant(User user) {
         participants.add(user);

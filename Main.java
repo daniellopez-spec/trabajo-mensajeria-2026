@@ -1,20 +1,21 @@
-import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.util.Scanner;  
+ 
 public class Main {
-
+     private static ArrayList<String> users = new ArrayList<>();
     public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-
+          
+        Scanner sc = new Scanner(System.in); 
+         
         ConversationManager chat = new ConversationManager();
 
-        User u1 = new User("1", "Mario");
+        User u1 = new User("1", "Juan");
         User u2 = new User("2", "Angie");
-        
 
         chat.addParticipant(u1);
         chat.addParticipant(u2);
-
+         
+        
         int option;
 
         do {
@@ -25,6 +26,7 @@ public class Main {
             System.out.println("3 Create poll");
             System.out.println("4 View messages");
             System.out.println("5 Vote poll");
+            System.out.println("6 Register new user");
             System.out.println("0 Exit");
 
             option = sc.nextInt();
@@ -36,19 +38,27 @@ public class Main {
             String name = sc.nextLine();
 
             User currentUser = null;
-
-            if (name.equalsIgnoreCase("Mario")) {
-                currentUser = u1;
-            } else if (name.equalsIgnoreCase("Angie")) {
-                currentUser = u2;
-            }
-         
             
-            if (currentUser == null) {
-                System.out.println("User not registered.");
-                continue;
-            }
 
+         if (users.contains(name)) {
+           if (name.equalsIgnoreCase("Juan")) {
+        currentUser = u1;
+          } else if (name.equalsIgnoreCase("Angie")) {
+        currentUser = u2;
+           } else {
+        // Buscar si ya existe en el chat
+            for (User u : chat.getParticipants()) {
+            if (u.getName().equalsIgnoreCase(name)) {
+                currentUser = u;
+                break;
+            }
+        }
+                }
+         } else {
+          System.out.println("User not registered.");
+          continue;
+              }
+     
             switch (option) {
 
                 case 1:
@@ -67,7 +77,7 @@ public class Main {
 
                     break;
 
-                case 2:
+                  case 2:
 
                     System.out.print("Description: ");
                     String desc = sc.nextLine();
@@ -144,10 +154,31 @@ public class Main {
                     }
 
                     break;
+               
+                  case 6:
+               System.out.print("Enter new username: ");
+               String newUser = sc.nextLine();
+                registerUser(newUser);
+              // Crear objeto User y añadirlo al chat
+               User newU = new User("u" + System.currentTimeMillis(), newUser);
+               chat.addParticipant(newU);
+               break;  
+    
             }
 
         } while (option != 0);
+            
 
-        sc.close();
+         sc.close();
+        }
+      public static void registerUser(String name) {
+        if (users.contains(name)) {
+            System.out.println("User '" + name + "' is already registered.");
+         } else {
+            users.add(name);
+            System.out.println("User '" + name + "' registered successfully.");
+         }
     }
+
+
 }
