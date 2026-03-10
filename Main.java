@@ -38,9 +38,13 @@ public class Main {
             if (option == 6) {
                 System.out.print("Enter new username: ");
                 String newUser = sc.nextLine();
+                boolean existe = users.stream().anyMatch(u -> u.equalsIgnoreCase(newUser));
+
                 registerUser(newUser);
-                User newU = new User("u" + System.currentTimeMillis(), newUser);
-                chat.addParticipant(newU);
+                if (!existe){
+                    User newU = new User("u" + System.currentTimeMillis(), newUser);
+                    chat.addParticipant(newU);
+                }
                 continue;
             }
 
