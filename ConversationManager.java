@@ -12,10 +12,8 @@ public class ConversationManager {
     }
 
     public List<User> getParticipants() {
-    return participants;
-}
-
-     
+        return participants;
+    }
 
     public void addParticipant(User user) {
         participants.add(user);
@@ -33,5 +31,24 @@ public class ConversationManager {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    // NUEVO
+    public void showPolls() {
+        boolean hayEncuestas = false;
+
+        for (Message m : messages) {
+            if (m instanceof PollMessage) {
+                hayEncuestas = true;
+                PollMessage pm = (PollMessage) m;
+                pm.show();
+                pm.showResults();
+                System.out.println("----------------------------");
+            }
+        }
+
+        if (!hayEncuestas) {
+            System.out.println("No polls have been created yet.");
+        }
     }
 }
