@@ -46,11 +46,19 @@ public class Main {
             if (option == 6) {
                 System.out.print("Enter new username: ");
                 String newUser = sc.nextLine();
+                boolean existe = users.stream().anyMatch(u -> u.equalsIgnoreCase(newUser));
+
                 registerUser(newUser);
+
                 User newU = new User("u" + System.currentTimeMillis(), newUser);
                 chat.addParticipant(newU);
                 newU.registerUser();
                 newU.participateInConversation();
+
+                if (!existe){
+                    User newu = new User("u" + System.currentTimeMillis(), newUser);
+                    chat.addParticipant(newU);
+                
                 continue;
             }
 
@@ -213,13 +221,18 @@ public class Main {
                         }
                     }
                     break;
+                    default:
+                        System.out.println("invalid option. please try again");
+                        break;
             }
+        
 
-        } while (option != 0);
+             } while (option != 0);
 
         sc.close();
+        
     }
-
+}
     public static void registerUser(String name) {
         boolean existe = users.stream().anyMatch(u -> u.equalsIgnoreCase(name));
         if (existe) {
