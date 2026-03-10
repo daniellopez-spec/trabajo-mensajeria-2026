@@ -138,6 +138,9 @@ public class Main {
                         }
                     }
                     break;
+                    default:
+                        System.out.println("invalid option. please try again");
+                        break;
             }
 
         } while (option != 0);
